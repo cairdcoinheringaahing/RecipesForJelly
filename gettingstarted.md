@@ -16,7 +16,7 @@ There are some crucial concepts and terms that need to be introduced first thoug
  
  ## Atoms
  
- These are, as their name suggests, the fundamental building blocks of a Jelly program. Each atom takes either 0, 1 or 2 arguments and returns a single value based on those arguments. For example, `H` (halve) is an atom that takes one argument and returns that argument halved, and `+` is one that takes 2 arguments and returns their sum.
+ These are, as their name suggests, the fundamental building blocks of a Jelly program. Each atom takes either 0, 1 or 2 arguments and returns a single value based on those arguments. For example, `H` (halve) is an atom that takes one argument on it's left side and returns that argument halved, and `+` is one that takes 2 arguments (one on the left and one on the right) and returns their sum.
  
 ## Arity
 
