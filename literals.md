@@ -1,4 +1,4 @@
-# Types of literla
+# A literal list
 
 Jelly has multiple different types of literals, all of which are *niladic atoms*:
 
