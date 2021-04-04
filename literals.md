@@ -1,6 +1,6 @@
-# Types of nilad
+# Types of literla
 
-Jelly has multiple different types of nilad:
+Jelly has multiple different types of literals, all of which are *niladic atoms*:
 
 - Integers. These are strings of digits (`1234567890`), not beginning with `0`, and potentially being preceded by a `-` to denote negative numbers.
 
@@ -29,4 +29,4 @@ Jelly has multiple different types of nilad:
 - Two-char literals. These begin with `⁾` and consume the next two characters in the program, turning them into a string: [Try it online!](https://tio.run/##y0rNyan8//9R477EpP//AQ "Jelly – Try It Online")
 - Two-digit base-250 literals. These begin with `⁽` and are followed by two characters. These two characters are interpreted as a base-250 integer `x`. If `x > 31500`, then subtract 62850 from `x`. Otherwise, add 750. This allows you to express any integer between -31349 and -100, or between 1001 and 32250 in 3 bytes.
 
-- Lists. You can create a list of this nilads by separating them with a `,` which will cause them to be parsed as a single link, rather than as a use of the pair atom. Note that this only works with these "literal" nilads, and without spaces. Using a `,` with a nilad atom (e.g. `³`) turns the comma into the pair atom. Lists can optionally be delimited with `[` and `]`.
+- Lists. You can create a list of these literals by separating them with a `,` which will cause them to be parsed as a single link, rather than as a use of the pair atom. Note that this only works with these literal nilads, and without spaces. Using a `,` with a nilad atom (e.g. `³`) turns the comma into the pair atom. Lists can optionally be delimited with `[` and `]`.
