@@ -7,3 +7,4 @@ Lines are separated from one another with either a newline or a pilcrow (`¶`), 
 Jelly has 9 quicks for calling other links:
 
 - `ß`. This calls the same link it's on (recursion), with the same arity it was initially run. [For example](https://tio.run/##y0rNyan8///hzpZHDTMOzz/WpXBop4KNoYGK/f///40B). This checks if its argument is less than 10, and if so, it prints it, increments it then calls the link again, with the incremented argument as its new argument
+- `¢`: "Last link as nilad". This calls the previous link (on the line above) as a nilad i.e. with no arguments. 99% of the time you'll use this is because you need to calculate or build a nilad that's just too long to fit in the main link
