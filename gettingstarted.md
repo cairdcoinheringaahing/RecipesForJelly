@@ -53,3 +53,9 @@ Jelly uses the term *link* to refer to two different things: links as defined ab
     H
     
  By default, Jelly only executes the last line of a program, called the *main link*. Throughtout this tutorial, these such links will be referred to as either *main link*, *helper link* or *link (line)* to avoid confusion.
+
+ ---
+
+ [How does a Jelly program work?](https://github.com/cairdcoinheringaahing/RecipesForJelly/blob/main/howprogramswork.md)
+
+ [Contents](https://github.com/cairdcoinheringaahing/RecipesForJelly/blob/main/README.md)
