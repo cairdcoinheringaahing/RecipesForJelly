@@ -1,5 +1,13 @@
 # How does a Jelly program work?
 
+---
+
+[Getting started](https://github.com/cairdcoinheringaahing/RecipesForJelly/blob/main/gettingstarted.md)
+
+[Contents](https://github.com/cairdcoinheringaahing/RecipesForJelly/blob/main/README.md)
+
+---
+
 A full Jelly program is made up by one of more *lines*. Each line is made up of one or more *chains*. Each chain is made up of one or more *links*. Each link is made up of one or more *atoms* and zero or more *quicks*.
 
 Execution works by only considering the last line, the **main link**. If this line contains any *chain separators* (any of `øµ)ðɓ`), it contains more than one chain. Otherwise, it is made of a single chain.
@@ -18,36 +26,36 @@ Jelly parses a monadic or dyadic chain by repeatedly chopping off links from the
 
 Then, Jelly begins executing the chain, by matching the arities of the links in the chain against the following patterns. Each step, we work our way down the list of patterns, stopping at the first one it matches:
 
-1. **dyad-monad pair**. The arities of the first 2 links are **2, 1**. For example, `+H` or `,²`. We first apply the monad to `v`, yielding `v'`. We then set `v` to the result of applying the dyad, with `v` on the left and `v'` on the right. For the `+H` example, we first halve `v`, then add it to `v`, yielding `v + v÷2`
-2. **dyad-nilad pair**. The arities of the first 2 links are **2, 0**. We apply the dyad to `v` with the nilad as the right argument and `v` as the left.
-3. **nilad-dyad pair**. The arities of the first 2 links are **0, 2**. We apply the dyad to `v` with the nilad as the *left* argument and `v` as the right.
-4. **dyad**. The arity of the first link is **2**. We apply the dyad to `v` with `v` as the left argument and `ω` (the argument passed to the chain) as the right
-5. **monad**. The arity of the first link is **1**. We apply the monad to `v`
+1. **dyad-monad pair**, `dM`. The arities of the first 2 links are **2, 1**. We first apply the monad to `v`, yielding `M(v)`. We then set `v` to the result of applying the dyad, with `v` on the left and `M(v)` on the right, giving `v = d(v, M(v))`
+2. **dyad-nilad pair**, `dN`. The arities of the first 2 links are **2, 0**. We apply the dyad to `v` with the nilad as the right argument and `v` as the left: `v = d(v, N)`.
+3. **nilad-dyad pair**, `Nd`. The arities of the first 2 links are **0, 2**. We apply the dyad to `v` with the nilad as the *left* argument and `v` as the right: `v = d(N, v)`.
+4. **dyad**, `d`. The arity of the first link is **2**. We apply the dyad to `v` with `v` as the left argument and `ω` (the argument passed to the chain) as the right: `v = d(v, ω)`
+5. **monad**, `M`. The arity of the first link is **1**. We apply the monad to `v`: `v = M(v)`
 
 After updating `v` to the value from the pattern, we remove the link(s) matched and begin again with the rest of the chain.
 
-If none of the patterns are met, we have what's called an *unparseable nilad*, i.e. a nilad that isn't part of a dyad pair. In this case, Jelly outputs `v` (without a trailing newline) and resets `v` to this nilad. [For example](https://tio.run/##y0rNyan8///QJtNDm/7//28GAA)
+If none of the patterns are met, we have what's called an *unparseable nilad*, i.e. a nilad that isn't part of a dyad pair. In this case, Jelly outputs `v` (without a trailing newline) and resets `v` to this nilad. [For example](https://tio.run/##y0rNyan8///QJtNDm/7//28GAA): we square the `6` to give `v = 36`, but the remaining pattern, **0, 1** isn't parseable. So we output `36`, set `v` to the nilad `v = 5` and continue with the final monad, output `25` at the end. Remember that Jelly doesn't output with a trailing newline unless specifically told to with the `Ṅ` atom.
 
 ### Dyadic chain
 
 This time, the chain is passed two arguments, `λ` (left) and `ρ` (right). Again, the chain has a "flow-through" value `v`. However, unlike a monadic chain, the starting value isn't so easily determined:
 
 - If the chain begins with a nilad `α` followed by a monad, then `v = α` and we chop off the nilad
-- If the chain begins with 3 dyads, then we apply the first dyad with `λ` on the left and `ρ` on the right, assign the result to `v` and chop off the first dyad
+- If the chain begins with 3 dyads, then we apply the first dyad `d` with `λ` on the left and `ρ` on the right, giving `v = d(λ, ρ)` and chop off the first dyad
 - Otherwise, `v = λ`.
 
 As with the monadic chain, we then work our way down the following patterns of arities, stopping at the first match:
 
-1. **dyad, dyad, nilad**. The arities of the first three links are **2, 2, 0**. We take the first dyad and apply it to `v`, with `v` on the left and `ρ` on the right. We then take the **dyad-nilad pair** formed by the other 2 links and apply that to the result of the first dyad
-2. **dyad, dyad**. The arities of the first two links are **2, 2** (and the third link is not a nilad). First, we apply the second dyad with `λ` on the left and `ρ` on the right, calling the result `v'`. Then, we apply the first dyad with `v` on the left and `v'` on the right. [An example](https://tio.run/##y0rNyan8/19H@////4b/jQA)
-2. **dyad-nilad pair**. The arities of the first 2 links are **2, 0**. We apply the dyad to `v` with the nilad as the right argument and `v` as the left.
-3. **nilad-dyad pair**. The arities of the first 2 links are **0, 2**. We apply the dyad to `v` with the nilad as the *left* argument and `v` as the right.
-4. **dyad**. The arity of the first link is **2**. We apply the dyad to `v` with `v` as the left argument and `ρ` as the right
-5. **monad**. The arity of the first link is **1**. We apply the monad to `v`
+1. **dyad, dyad, nilad**, `fgN`. The arities of the first three links are **2, 2, 0**. We apply the first dyad, `f(v, ρ)`, then apply the **dyad-nilad** pair to give `v = g(f(v, ρ), N)`.
+2. **dyad, dyad**, `fg`. The arities of the first two links are **2, 2** (and the third link is not a nilad). First, we apply the second dyad, `g(λ, ρ)`. Then, we apply the first dyad as `v = f(v, g(λ, ρ))`. [An example](https://tio.run/##y0rNyan8/19H@////4b/jQA)
+2. **dyad-nilad pair**, `dN`. The arities of the first 2 links are **2, 0**. We apply the dyad to `v` with the nilad as the right argument and `v` as the left: `v = d(v, N)`.
+3. **nilad-dyad pair**, `Nd`. The arities of the first 2 links are **0, 2**. We apply the dyad to `v` with the nilad as the *left* argument and `v` as the right: `v = d(N, v)`.
+4. **dyad**, `d`. The arity of the first link is **2**. We apply the dyad to `v` with `v` as the left argument and `ρ` as the right: `v = d(v, ρ)`
+5. **monad**, `M`. The arity of the first link is **1**. We apply the monad to `v`: `v = M(v)`
 
 After updating `v` to the value from the pattern, we remove the link(s) matched and begin again with the rest of the chain.
 
-As with a monadic chain, if none of the patterns are met, we have an *unparseable nilad*, i.e. a nilad that isn't part of a dyad pair. In this case, Jelly outputs `v` (without a trailing newline) and resets `v` to this nilad. [For example](https://tio.run/##y0rNyan8/1/70CYTj////5v9NwQA)
+As with a monadic chain, if none of the patterns are met, we have an *unparseable nilad*, i.e. a nilad that isn't part of a dyad pair. In this case, Jelly outputs `v` (without a trailing newline) and resets `v` to this nilad. [For example](https://tio.run/##y0rNyan8/1/70CYTj////5v9NwQA).
 
 ## Multi chain lines
 
@@ -70,3 +78,9 @@ We can now use the separators to figure out the arities of each chain. As this i
 By looking up the rules for monadic parsing, we can see that this matches pattern 5 (**monad**), then pattern 1 (**dyad-monad**). So the first thing we do is apply the first monad to `v = ω`, which yields `1-ω`. We then deal with with dyad-monad pattern. First, we apply the monad to `v = ω` to get `ω÷2`. Finally, we apply the dyadic chain `+×` with `1-ω` on the left and `ω÷2` on the right. Applying the "dyadic chain" parsing rules to this, we match pattern 2 (**dyad, dyad**). `λ = 1-ω`, `ρ = ω÷2` and `v = λ = 1-ω`. We first get `λ×ρ = (1-ω)(ω÷2)`, then calculate `v+(λ×ρ) = λ+(λ×ρ) = (1-ω)+(1-ω)(ω÷2)`, which is our final output.
 
 The key thing to remember if you want to succinctly use multiple chains in your Jelly programs is that *the parsing rules for chains are the same* as the parsing rules for links. By analysing the arities of the chains, you can often save a lot of bytes.
+
+---
+
+[Multiline programs](https://github.com/cairdcoinheringaahing/RecipesForJelly/blob/main)
+
+[Contents](https://github.com/cairdcoinheringaahing/RecipesForJelly/blob/main/README.md)
